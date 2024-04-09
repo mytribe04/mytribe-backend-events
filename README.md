@@ -24,7 +24,7 @@ Please follow the above rule in order to maintain consistent code reviewing syst
         iii.] Logic behind chnages made and code logic in brief
 ```
 This will help code reviewers to manage and understand code easily and will maintain ur proof of work.
-
+![alt text](https://blog.jetbrains.com/wp-content/uploads/2023/05/git-flow.png)
 </br>
 </br>
 
