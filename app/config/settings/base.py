@@ -29,7 +29,7 @@ if READ_DOT_ENV_FILE:
 SECRET_KEY = 'django-insecure-=nwg@1ulo6^1mu50hj-ev*+ol@&b1*i&mxw(7!p13h5)kw&e-e'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env.bool("DJANGO_DEBUG", False)
+DEBUG = env.bool("DJANGO_DEBUG", True)
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1", "*"]
@@ -38,6 +38,7 @@ ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1", "*"]
 # Application definition
 
 DJANGO_APPS = [
+    'event.apps.EventConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -119,7 +120,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     "default": env.db(
         "DATABASE_URL",
-        default="postgresql://127.0.0.1:5432/authtribe",
+        default="postgresql://postgres:root@127.0.0.1:5432/authtribe",
     ),
 }
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
