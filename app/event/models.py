@@ -62,33 +62,6 @@ class Event(models.Model):
         return self.event_name
 
 
-class Sponsor(models.Model):
-    sponsor = models.ForeignKey(User, on_delete=models.CASCADE)
-    events = models.ManyToManyField(Event)
 
-    @property
-    def username(self):
-        return self.sponsor.username
-
-    @property
-    def user_id(self):
-        return self.sponsor.id
-
-    @property
-    def email(self):
-        return self.sponsor.email
-
-    @property
-    def sponsored_events(self):
-        return [
-            {
-                "event_id": event.id,
-                "event_name": event.event_name
-            }
-            for event in self.events.all()
-        ]
-
-    def __str__(self):
-        return self.username
 
 
