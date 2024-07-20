@@ -1,44 +1,94 @@
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.status import HTTP_400_BAD_REQUEST
+from rest_framework.views import APIView
 
+from .. import logger
 from ..models.event import Event
-from ..serializers.eventSerializer import EventSerializer
+from ..serializers.event_serializer import EventSerializer
+from ..utils.exceptions import CustomException
 
 
-@api_view(['GET', 'POST'])
-def event_list(request):
-
-    if request.method == 'GET':
-        event = Event.objects.all()
-        serializer = EventSerializer(event, many = True)
-        return Response(serializer.data)
-
-    elif request.method == 'POST':
-        serializer = EventSerializer(data=request.data, many=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['GET', 'PUT', 'DELETE'])
-def event_detail(request, event_id):
-    try :
-        event = Event.objects.get(pk= event_id)
-    except Event.DoesNotExist :
-        return Response(status=status.HTTP_404_NOT_FOUND)
-
-    if request.method == 'GET' :
-        serializer = EventSerializer(event)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    elif request.method == 'PUT':
-        serializer = EventSerializer(event, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
+class EventAPIView(APIView):
+    def get(self, request):
+        try:
+            event = Event.objects.all()
+            serializer = EventSerializer(event, many=True)
             return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            logger.error("Event retrieval failed; Error: %s" % (str(e)))
+            raise CustomException(
+                message="Error while fetching Event",
+                status=HTTP_400_BAD_REQUEST,
+                log_msg=str(e),
+            )
 
-    elif request.method == 'DELETE':
-        event.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    def post(self, request):
+        try:
+            serializer = EventSerializer(data=request.data, many=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            logger.error("Event retrieval failed; Error: %s" % (str(e)))
+            raise CustomException(
+                message="Error while fetching Event",
+                status=HTTP_400_BAD_REQUEST,
+                log_msg=str(e),
+            )
+
+
+class EventDetailAPIView(APIView):
+    def get(self, request, event_id):
+        try:
+            event = Event.objects.get(id=event_id)
+            if not event:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+
+            serializer = EventSerializer(event)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            logger.error("Event detail retrieval failed; Error: %s" % (str(e)))
+            raise CustomException(
+                message="Error while fetching Event detail",
+                status=HTTP_400_BAD_REQUEST,
+                log_msg=str(e),
+            )
+
+    def put(self, request, event_id):
+        try:
+            event = Event.objects.get(id=event_id)
+            if not event:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+            serializer = EventSerializer(event, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            logger.error("Event edit failed; Error: %s" % (str(e)))
+            raise CustomException(
+                message="Error while editing Event",
+                status=HTTP_400_BAD_REQUEST,
+                log_msg=str(e),
+            )
+
+    def delete(self, request, event_id):
+        try:
+            event = Event.objects.get(id=event_id)
+            if not event:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+            event.is_active = False
+            event.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        except Exception as e:
+            logger.error("Event Deletion error; Error: %s" % (str(e)))
+            raise CustomException(
+                message="Error while deleting Event",
+                status=HTTP_400_BAD_REQUEST,
+                log_msg=str(e),
+            )

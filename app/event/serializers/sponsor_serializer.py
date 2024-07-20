@@ -9,4 +9,9 @@ class SponsorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Sponsor
-        fields = ['id', 'username', 'email', 'sponsored_events']
+        fields = [
+            'id',
+            'username',
+            'email',
+            'sponsored_events'
+        ]

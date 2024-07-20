@@ -9,4 +9,9 @@ class OrganiserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Organiser
-        fields = ['id', 'username', 'email', 'organised_events']
+        fields = [
+            'id',
+            'username',
+            'email',
+            'organised_events'
+        ]
