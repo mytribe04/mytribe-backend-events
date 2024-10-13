@@ -2,7 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.response import Response
 from ..models.organiser import Organiser
-from ..serializers.organiserSerializer import OrganiserSerializer
+from ..serializers.organiser_serializer import OrganiserSerializer
 
 
 @api_view(['GET'])

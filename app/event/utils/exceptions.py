@@ -10,7 +10,7 @@ from rest_framework.status import HTTP_400_BAD_REQUEST
 from . import constants
 from .. import logger
 
-response_logger = logging.getLogger(settings.BX_LOGGER)
+response_logger = logging.getLogger(settings.EVENT_LOGGER)
 
 
 def core_exception_handler(exc, context):

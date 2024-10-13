@@ -2,7 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from ..models.sponsor import Sponsor
-from ..serializers.sponsorSerializer import SponsorSerializer
+from ..serializers.sponsor_serializer import SponsorSerializer
 
 
 @api_view(['GET'])

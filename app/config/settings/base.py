@@ -113,6 +113,7 @@ MANAGERS = ADMINS
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
+EVENT_LOGGER = "events_service_logs"
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -165,3 +166,4 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+ENV_NAME = env.str("env", default="local")

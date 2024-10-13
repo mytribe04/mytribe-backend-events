@@ -14,8 +14,8 @@ class ServiceNameFormatter(logging.Formatter):
         return super().format(record)
 
 
-logger = logging.getLogger(settings.BX_LOGGER)
+logger = logging.getLogger(settings.EVENT_LOGGER)
 handler = logging.StreamHandler()
-handler.setFormatter(ServiceNameFormatter("BX"))
+handler.setFormatter(ServiceNameFormatter("EVENT"))
 logger.addHandler(handler)
 logger.setLevel(logging.INFO)
